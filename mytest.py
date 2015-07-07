@@ -3,7 +3,7 @@
 #X = np.array([['a','a','a'], ['a','a',1], [1,'a','a'],[1,1,1]])
 #y = np.array([['a'],['a'],[1],[2]])
 import numpy as np
-import infoGain
+import infogain2
 import time
 from sklearn.datasets import load_iris
 from sklearn.datasets import load_digits
@@ -16,7 +16,11 @@ def mytest_info():
 	X, y = iris.data, iris.target
 	#print "X is ", X.shape
 	t1 = time.clock()
-	result = infoGain.infoGain(X,y,dest_num)
+	ch2 = SelectKBest(infogain2.infoGain, k = 20)
+	X_comp = ch2.fit_transform(X,y)
+	result = []
+	for i in ch2.get_support(indices=True):
+		result.append(i)
 	t2 = time.clock()
 	slot = t2 - t1
 	#print "time is ", slot
