@@ -1,0 +1,53 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{pbox}
+\usepackage{tabularx}
+\title{Document for infogain2.infoGain}
+\author{XXX}
+\begin{document}
+	\maketitle
+	\paragraph{infogain2.infoGain\\}
+	Compute information gain stats between each non-negative feature and class.\\
+	This score can be used to select the n-features features with the highest values for the test information gain test from X, which must contain only non-negative features.\\
+	Recall that information gain generates the rank of each feature and select particular number of them, and this method has interface as same as $sklearn.feature_selection.chi2$ does.\\
+	\begin{center}
+	\begin{tabularx}{\textwidth}{lX}
+	 Parameters & X: array-like, sparse matrix, shape = {(n-samples, n-features-in) \newline Sample} vectors.
+				y : array-like, shape = (n-samples,)\newline
+				Target vector (class labels). \\
+	 Returns & diff : array, shape = (n-features,) \newline
+	 		Represents floating point of size 8 bytes 
+	 		information gain value of each feature.
+			empty vector: array, shape = (n-features) \newline
+			Place holder. each element is zero. \\ 
+	 \end{tabularx}
+	 \end{center}
+	 Notes: Complexity of this algorithm is O(n-classes * n-features).\\
+	 \\
+	 \newpage
+	 TEST CASE\\
+	 \begin{enumerate}
+	 \item {Using $sklearn.datasets.load\_iris$,(2 features in $150 * 4$)}
+	  {\\indexes of features chi2 selected:\\     
+$[2,3]$ \\
+process duration: $0.000989$\\
+\\
+indexes of features infogain selected:\\
+$[2,3]$\\
+process duration: $0.008371$\\
+\\
+overlapped : $2 / 2$\\
+$8.46410515672 $ times slower than build-in  chi2}
+	 \item {Using $sklearn.datasets.load\_digits$,(20 features in $1797 * 64$)}
+	 {\\indexes of features chi2 selected:\\     
+$[5, 6, 13, 19, 20, 21, 26, 28, 30, 33, 34, 41, 42, 43, 44, 46, 54, 58, 61, 62]$ \\
+process duration: $0.004941$\\
+\\
+indexes of features infogain selected:\\
+$[2, 10, 13, 20, 21, 26, 28, 30, 33, 34, 36, 38, 42, 43, 44, 46, 53, 54, 58, 61]$\\
+process duration: $1.398525$\\
+\\
+overlapped : $15 / 20$\\
+$283.044930176 $ times slower than build-in  chi2}
+	 \end{enumerate}
+\end{document}

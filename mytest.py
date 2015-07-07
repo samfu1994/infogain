@@ -9,14 +9,14 @@ from sklearn.datasets import load_iris
 from sklearn.datasets import load_digits
 from sklearn.feature_selection import SelectKBest
 from sklearn.feature_selection import chi2
+dest_num = 10
 def mytest_info():
-	dest_num = 20
 	iris = load_digits()
 	#iris = load_iris()
 	X, y = iris.data, iris.target
 	#print "X is ", X.shape
 	t1 = time.clock()
-	ch2 = SelectKBest(infogain2.infoGain, k = 20)
+	ch2 = SelectKBest(infogain2.infoGain, k = dest_num)
 	X_comp = ch2.fit_transform(X,y)
 	result = []
 	for i in ch2.get_support(indices=True):
@@ -27,7 +27,7 @@ def mytest_info():
 	return result, slot
 
 def mytest_chi2():
-	dest_num = 20
+	#dest_num = 10
 	iris = load_digits()
 	#iris = load_iris()
 	X, y = iris.data, iris.target
@@ -43,9 +43,6 @@ def mytest_chi2():
 	#print result
 	#print "time is ", slot
 	return result, slot
-dd = load_digits()
-xx = dd.data
-print xx.shape
 result_chi2 , t_chi2 = mytest_chi2()
 print "chi2:     "
 print result_chi2, t_chi2

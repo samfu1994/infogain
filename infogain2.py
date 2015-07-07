@@ -1,5 +1,6 @@
 from collections import defaultdict
 from sklearn import preprocessing
+from array import *
 import numpy as np
 import math
 import operator
@@ -100,11 +101,12 @@ def infoGain(X, y, n = 2):
         current = float(yMap[ele]) / sampleNum
         oldScore += current * math.log(current, 2)
     oldScore = -oldScore
-    diff = []
-    empty = []
+    diff = array('d')
+    empty = array('L')
     for i in scoreVector:
         diff.append(oldScore - i)
         empty.append(0)
+    ##print "type is ", type(diff)
     #print "information gain vector is  ", diff
     return diff, empty
 
