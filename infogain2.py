@@ -100,36 +100,11 @@ def infoGain(X, y, n = 2):
         current = float(yMap[ele]) / sampleNum
         oldScore += current * math.log(current, 2)
     oldScore = -oldScore
-    #diff = []
-    #empty = []
-    #for i in scoreVector:
-    #    diff.append(oldScore - i)
-    #    empty.append(0)
-    #print "information gain vector is  ", diff
-    #return diff, empty
-
-
-
-
-    diff = {}
-    counter = 0
+    diff = []
+    empty = []
     for i in scoreVector:
-        diff[oldScore - i] = counter
-        counter += 1
-    sorted_diff = sorted(diff.items(), key = operator.itemgetter(0), reverse = True)
-    #print "information gain vector is  ", sorted_diff
-    #print "information gain vector is  ", sorted_diff
-    c = 0
-    K = X.T
-    #for i in sorted_diff:
-    #    column_num = sorted_diff[c][1]
-    #    print K[column_num]
-    #    c += 1
-    #    if c == n:
-    #        break 
-    returnVector = []
-    for i in range (n):
-        returnVector.append(sorted_diff[i][1])
-    returnVector.sort()
-    return returnVector
+        diff.append(oldScore - i)
+        empty.append(0)
+    #print "information gain vector is  ", diff
+    return diff, empty
 
