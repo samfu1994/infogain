@@ -6,34 +6,48 @@ import math
 import operator
 def infoGain(X, y, n = 2):
     sampleNum, featureSize = X.shape #get the parameters
-    classNum = y.shape[0]   
     scoreVector = []
+    Y = preprocessing.LabelBinarizer().fit_transform(y)
+    classNum = Y.shape[1]   
     for i in range (featureSize): #travel by columns
         subtotal = 0
         myMap = {} #myMap is to record the possible value of a particular feature, and how many times this value shows
         mapIndex = {}
-        different_value_class = 0
-        secondMap = defaultdict(dict)#secondMap: first dimention: the feature value, second dimention: the class 
+        different_value_feature = 0
+        current_feature = 0
         #the value of the map: how many times this class shows in this feature value in this particular feature 
         rowCount = 0
-        for j in range (sampleNum): #travel by rows
-            if str(X[j][i]) in myMap: # the value in this feature has been recorded before
-                myMap[str(X[j][i])] += 1  
-                if str(y[rowCount]) in secondMap[str(X[j][i])]: #if the class has been recorded before
-                    secondMap[str(X[j][i])][str(y[rowCount])] += 1
+        yy = np.array([0] * sampleNum)
+        for j in range(sampleNum):
+            if str(X[j][i]) not in myMap:
+                myMap[str(X[j][i])] = different_value_feature
+                different_value_feature += 1
+            tmp_count = 0
+            for k in Y[j]:
+                if k != 1:
+                    tmp_count += 1
                 else:
-                    secondMap[str(X[j][i])][str(y[rowCount])] = 1
-            else:
-                myMap[str(X[j][i])] = 1
-                secondMap[str(X[j][i])][str(y[rowCount])] = 1
-            rowCount += 1
+                    yy[j] = tmp_count
+                    break
+
+        mat = np.array([[0] * classNum] * different_value_feature)
+        for j in range (sampleNum): #travel by rows
+            index = myMap[str(X[j][i])] #if the class has been recorded before
+            mat[index][yy[j]] += 1
         #for k in myMap:
         #    print k, myMap[k]
         for ele in myMap: #for each feature value
             tmp = 0.0
-            weight = float(myMap[ele]) / sampleNum
-            for sub_ele in secondMap[ele]: #for each class shows in this feature value
-                current = secondMap[ele][sub_ele] / float(myMap[ele])#(p*log(p))
+            subSum = 0
+            current_index = myMap[ele]
+            for k in range(classNum):
+                subSum += mat[current_index][k]
+            weight = float(subSum) / sampleNum
+            for sub_ele in mat[current_index]: #for each class shows in this feature value
+                if int(sub_ele) == 0:
+                    continue
+                current =  int(sub_ele) / float(subSum)#(p*log(p))
+                #print "current is " , current
                 tmp += current * math.log(current,2) #sigma(p*log(p))
             subtotal += tmp * weight#subtotal is the information gain of each feature
         subtotal = -subtotal
